@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Filmtrip</title>
+
+    <style>
+        /* dropdown menu style */
+        #topMenu ul {
+                /* 메인 메뉴 안의 ul을 설정함: 상위메뉴의 ul+하위 메뉴의 ul */ 
+                list-style-type: none; 
+                /* 메인 메뉴 안의 ul 내부의 목록 표시를 없애줌 */ 
+                margin: 0px; 
+                /* 메인 메뉴 안의 ul의 margin을 없앰 */ 
+                padding: 0px; 
+                /* 메인 메뉴 안의 ul의 padding을 없앰 */ 
+            } 
+        #topMenu ul li { 
+            /* 메인 메뉴 안에 ul 태그 안에 있는 li 태그의 스타일 적용(상위/하위메뉴 모두) */ 
+            color: white; 
+            /* 글씨 색을 흰색으로 설정 */ 
+            background-color: #2d2d2d; 
+            /* 배경 색을 RGB(2D2D2D)로 설정 */ 
+            float: left; 
+            /* 왼쪽으로 나열되도록 설정 */ 
+            line-height: 30px; 
+            /* 텍스트 한 줄의 높이를 30px로 설정 */ 
+            vertical-align: middle; 
+            /* 세로 정렬을 가운데로 설정 */ 
+            text-align: center; 
+            /* 텍스트를 가운데로 정렬 */ 
+            position: relative; 
+            /* 해당 li 태그 내부의 top/left 포지션 초기화 */ 
+        }
+        .menuLink, .submenuLink { 
+            /* 상위 메뉴와 하위 메뉴의 a 태그에 공통으로 설정할 스타일 */ 
+            text-decoration:none; 
+            /* a 태그의 꾸밈 효과 제거 */ 
+            display: block; 
+            /* a 태그의 클릭 범위를 넓힘 */  
+            /* 기본 넓이를 150px로 설정 */ 
+            /* 폰트 사이즈를 12px로 설정 */ 
+            font-weight: bold; 
+            /* 폰트를 굵게 설정 */ 
+            font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            text-transform: uppercase;
+            font-weight: 700;
+            /* 기본 폰트를 영어/한글 순서대로 설정 */ 
+        } 
+        .menuLink { 
+            /* 상위 메뉴의 글씨색을 흰색으로 설정 */ 
+            color: white; 
+        }
+        .submenuLink { 
+            /* 하위 메뉴의 a 태그 스타일 설정 */ 
+            color: #2d2d2d; 
+            /* 글씨 색을 RGB(2D2D2D)로 설정 */ 
+            /* background-color: white;  */
+            /* 배경색을 흰색으로 설정 */ 
+            /* border: solid 1px black;  */
+            /* 테두리를 설정 */ 
+            margin-top: -1px; 
+            /* 위 칸의 하단 테두리와 아래칸의 상단 테두리가 겹쳐지도록 설덩 */ 
+        } 
+        .longLink { 
+            /* 좀 더 긴 메뉴 스타일 설정 */
+            width: 190px; 
+            /* 넓이는 190px로 설정 */ 
+        } 
+        .submenu { 
+            /* 하위 메뉴 스타일 설정 */ 
+            position: absolute; 
+            /* html의 flow에 영향을 미치지 않게 absolute 설정 */ 
+            height: 0px; 
+            /* 초기 높이는 0px로 설정 */ 
+            overflow: hidden; 
+            /* 실 내용이 높이보다 커지면 해당 내용 감춤 */ 
+            transition: height .2s; 
+            /* height를 변화 시켰을 때 0.2초간 변화 되도록 설정(기본) */ 
+            -webkit-transition: height .2s; 
+            /* height를 변화 시켰을 때 0.2초간 변화 되도록 설정(구버전 크롬/사파라ㅣ) */ 
+            -moz-transition: height .2s; 
+            /* height를 변화 시켰을 때 0.2초간 변화 되도록 설정(구버전 파폭) */ 
+            -o-transition: height .2s; 
+            /* height를 변화 시켰을 때 0.2초간 변화 되도록 설정(구버전 오페라) */ 
+        } 
+        .topMenuLi:hover .submenu { 
+            /* 상위 메뉴에 마우스 모버한 경우 그 안의 하위 메뉴 스타일 설정 */ 
+            height: 500px; 
+            /* 높이를 93px로 설정 */ 
+        } 
+        .submenuLink:hover { 
+            /* 하위 메뉴의 a 태그의 마우스 오버 스타일 설정 */ 
+            /* color: red;  */
+            /* 글씨색을 빨간색으로 설정 */ 
+            background-color: #dddddd; 
+            text-decoration:none !important
+            /* 배경을 RGB(DDDDDD)로 설정 */ 
+        }
+        .nav>li>a {
+            position: relative;
+            display: block;
+            padding: 10px 15px;
+        }
+
+
+        fieldset {  position: relative;  display: inline-block;  padding: 0 0 0 40px;  background: #fff;  border: none;  border-radius: 5px; } 
+        input, button {  position: relative;  width: 150px;  height: 30px;  padding: 0;  display: inline-block;  float: left; } /* 검색창과 버튼 너비 크기 설정*/
+        input {  color: #666;  z-index: 2;  border: 0 none; }
+        input:focus {  outline: 0 none; } /* 마우스로 클릭 후 입력할 때의 반응에 대한 설정*/
+        input:focus + button {
+          -webkit-transform: translate(0, 0);
+          -ms-transform: translate(0, 0);
+          transform: translate(0, 0);
+          -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+        }
+
+        input:focus + button .fa {
+        -webkit-transform: translate(0px, 0);
+        -ms-transform: translate(0px, 0);
+        transform: translate(0px, 0);
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        color: #fff;
+        }
+
+        button {  z-index: 1;  width: 30px;  border: 0 none;  background: #17a2b8;  cursor: pointer;  border-radius: 0 5px 5px 0;  
+        -webkit-transform: translate(-30px, 0);
+        -ms-transform: translate(-30px, 0);
+        transform: translate(-30px, 0);
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+            /* 이상 버튼의 공간에 대한 설정*/
+        }
+
+        li {
+            list-style : none;
+        }
+
+
+
+        .fa-search {  font-size: 1.4rem;  color: #29abe2;  z-index: 3;  top: 25%; 
+
+        -webkit-transform: translate(-160px, 0); 
+
+            -ms-transform: translate(-160px, 0);
+
+                transform: translate(-160px, 0);
+
+        -webkit-transition-duration: 0.3s;
+
+                transition-duration: 0.3s;
+
+        -webkit-transition: all 0.1s ease-in-out;
+
+                transition: all 0.1s ease-in-out;
+
+        /* 이상 왼쪽 돋보기 이미지 위치 이동 설정*/
+        }
+
+
+
+    </style>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/freelancer.css" rel="stylesheet">
+    <link href="css/mycss.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.15.1/d3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            var name;
+            $("#call_input_text").click(function () {
+                name = $("#simple_input").val();
+                $.getJSON('/search?name='+name,name,function(data){
+                    var popup=[];
+                    $.each(data,function(i,item){
+                        popup.push('<div class="portfolio-modal modal fade" id="portfolioModal" tabindex="-1" role="dialog" aria-labelledby="portfolioModalLabel" aria-hidden="true">');
+                        popup.push('<div class="modal-content">');
+                        popup.push('<div class="close-modal" data-dismiss="modal">');
+                        popup.push('<div class="lr">');
+                        popup.push('<div class="rl">');
+                        popup.push('</div>');
+                        popup.push('</div>');
+                        popup.push('</div>');
+                        popup.push('<div class="container">');
+                        popup.push('<div class="row">');
+                        popup.push('<div class="col-lg-8 col-lg-offset-2">');
+                        popup.push('<div class="modal-body">');
+                        popup.push('<h1 style="font-size:50px;">'+item.name+'</h1>');
+                        popup.push('<hr class="star-primary">');
+                        popup.push('<img src="'+item.img+'" class="img-responsive img-centered" style="width:200px;" alt="">');
+                        for(var j = 0; j < item.info.length; j++) {
+                            if (item.info[j] == "Locations | ") {
+                                popup.push('<h3 style="text-align:center;font-size:30px;">LOCATIONS</h3>');
+                            }
+                            else if (item.info[j] == "DIRECTOR | ") {
+                                popup.push('</ul><h3 style="text-align:center;font-size:30px;">DIRECTOR</h3>');
+                            }
+                            else if (item.info[j] == "CAST | ") {
+                                popup.push('</ul><h3 style="text-align:center;font-size:30px;">CAST</h3>');
+                            }
+                            else {
+                                if (item.info[j].charAt(item.info[j].length-1) == ';' || item.info[j].charAt(item.info[j].length-1) == ',') {
+                                    popup.push('<li style="text-align:center;font-size:25px;">'+item.info[j].slice(0,-1)+'</li>');
+                                }
+                                else {
+                                    popup.push('<li style="text-align:center;font-size:25px;">'+item.info[j]+'</li>');
+                                }
+                            }
+                        }
+                        popup.push('<ul class="list-inline item-details">');
+                        popup.push('</ul');
+                        popup.push('<li>Support:');
+                        popup.push('<strong><a href="http://madcamp.io" target="_blank">MadCamp</a>');
+                        popup.push('</strong>');
+                        popup.push('</li>');
+                        popup.push('<li>Date:');
+                        popup.push('<strong>July 2020</a>');
+                        popup.push('</strong>');
+                        popup.push('</li>');
+                        popup.push('</ul>');
+                        popup.push('</div>');
+                        popup.push('</div>');
+                        popup.push('</div>');
+                        popup.push('</div>');
+                        popup.push('</div>');
+                        popup.push('</div>');
+                        $('.THIS').html(item.name);
+                    });
+                    console.log(popup);
+                    
+                    $('.THIS').show();
+                    $('.dream_class').html(popup.join(''));
+                });
+
+                
+            });
+
+            
+        
+        });
+    </script>
+    
+</head>
+
+<body id="page-top" class="index">
+<div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
+
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="#page-top">FILMTRIP</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right" id="topMenu">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <!-- <li class="page-scroll" class="cont_menu"> -->
+                        <li class="topMenuLi">
+                            <a href="#continents" class="menuLink">CONTINENTS</a>
+                            <ul class="submenu">
+                                <li><a href="/bootstrap2?continent=Asia&movie=?" class="submenuLink longLink">Asia</a></li>
+                                <li><a href="/bootstrap2?continent=Europe&movie=?" class="submenuLink longLink">Europe</a></li>
+                                <li><a href="/bootstrap2?continent=Africa&movie=?" class="submenuLink longLink">Africa</a></li>
+                                <li><a href="/bootstrap2?continent=USA&movie=?" class="submenuLink longLink">USA</a></li>
+                                <li><a href="/bootstrap2?continent=Canada&movie=?" class="submenuLink longLink">Canada</a></li>
+                                <li><a href="/bootstrap2?continent=United_Kingdom&movie=?" class="submenuLink longLink">United_Kingdom</a></li>
+                                <li><a href="/bootstrap2?continent=South_America&movie=?" class="submenuLink longLink">South_America</a></li>
+                                <li><a href="/bootstrap2?continent=Oceania&movie=?" class="submenuLink longLink">Oceania</a></li>
+                                <li><a href="/bootstrap2?continent=Middle_East&movie=?" class="submenuLink longLink">Middle_East</a></li>
+                                <li><a href="/bootstrap2?continent=Central_America&movie=?" class="submenuLink longLink">Central_America</a></li>
+                                <li><a href="/bootstrap2?continent=Caribbean&movie=?" class="submenuLink longLink">Caribbean</a></li>
+
+                            </ul>
+                        </li>
+
+                    <li class="page-scroll" style="margin-left: 10px; margin-right:20px;" >
+                        <a href="#about" class="menuLink">About</a>
+                    </li>
+
+                    <li class="page-scroll" style="margin-left: 30px;">
+                        <form style="margin-top: 10px;">
+                            <fieldset>
+                                <label for="movie"></label>
+                                <input type="search" id="simple_input">
+                                <button type="button" id="call_input_text" >
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                <div class="THIS" style="display:none;" data-toggle="modal" data-target="#portfolioModal">hello</div>
+                            </fieldset>
+                        </form>
+
+                    </li>
+
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="container" id="maincontent" tabindex="-1">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="img-responsive" src="img/worldwide.png" alt="">
+                    <div class="intro-text">
+                        <h1 class="name">FILMTRIP</h1>
+                        <hr class="star-light">
+                        <span class="skills">COVID19-TRIP-FILM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Portfolio Grid Section -->
+    <section id="continents">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Continents</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Asia" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Asia</h4>
+                            </div>
+                        </div>
+                    <img src="img/Continent/Asia.png" class="img-responsive" alt="Cabin">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Europe" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Europe</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/Europe.png" class="img-responsive" alt="Slice of cake">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Africa" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Africa</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/Africa.png" class="img-responsive" alt="Circus tent">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=USA" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>USA</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/USA.png" class="img-responsive" alt="Game controller">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Canada" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Canada</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/Canada.png" class="img-responsive" alt="Safe">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=United_Kingdom" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>United_Kingdom</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/United_Kingdom.png" class="img-responsive" alt="Submarine">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=South_America" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>South_America</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/South_America.png" class="img-responsive" alt="Submarine">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Oceania" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Oceania</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/Oceania.png" class="img-responsive" alt="Submarine">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Middle_East" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Middle_East</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/Middle_East.png" class="img-responsive" alt="Submarine">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Central_America" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Central_America</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/Central_America.png" class="img-responsive" alt="Submarine">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="/bootstrap2?continent=Caribbean" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h4>Caribbean</h4>
+                            </div>
+                        </div>
+                        <img src="img/Continent/Caribbean.png" class="img-responsive" alt="Submarine">
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="success" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>About</h2>
+                    <hr class="star-light">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                    <p>"FilmTrip" is for people who love traveling, but cannot because of CORONA-virus.</p>
+                </div>
+                <div class="col-lg-4">
+                    <p>You can search for movies which are introduced in this website in one of eleven continents where the movies were filmed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-above">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col col-md-4">
+                        <h3>Location</h3>
+                        <p>Kim Beang-Ho Kim Sam-Youl ITC Building(N1)
+                            <br>291, Daehak-ro, Yuseong-gu, Daejeon, Republic of Korea</p>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3>Around The Web</h3>
+                        <ul class="list-inline">
+                            <li>
+                                <a href="http://www.facebook.com" target="_blank" class="btn-social btn-outline"><span class="sr-only">Facebook</span><i class="fa fa-fw fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="http://www.google.com" target="_blank" class="btn-social btn-outline"><span class="sr-only">Google Plus</span><i class="fa fa-fw fa-google-plus"></i></a>
+                            </li>
+                            <li>
+                                <a href="http://www.twitter.com" target="_blank" class="btn-social btn-outline"><span class="sr-only">Twitter</span><i class="fa fa-fw fa-twitter"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3>About FilmTrip</h3>
+                        <p>This website is a free to use and is recommended for people who love not only traveling, but also watching movies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; FilmTrip 2020
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+
+    <!-- Portfolio Modals -->
+    <div class="dream_class">dream class</div>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <!-- <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script> -->
+    <!-- <script src="/server.js"></script> -->
+    <!-- Theme JavaScript -->
+    <script src="js/freelancer.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+.mememe {
+    border:3px;
+    width: 30px;
+    height: 30px;
+}
+
+.HELP {
+    height: 40px;
+    width: 200px;
+}
+
+.BUTTON {
+    width: 80px;
+    height: 40px;
+}
+
+.HELP, .BUTTON {
+    vertical-align:middle; 
+ }
